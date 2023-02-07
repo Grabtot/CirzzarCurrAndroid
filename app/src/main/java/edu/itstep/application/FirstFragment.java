@@ -26,7 +26,7 @@ import edu.itstep.application.emtity.Pizza;
 public class FirstFragment extends Fragment {
 
     private FragmentFirstBinding binding;
-    private GridView pizzaGrid;
+    private RecyclerView pizzaGrid;
     private PizzaAdapter mPizzaAdapter;
 
     @Override
@@ -34,6 +34,8 @@ public class FirstFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentFirstBinding.inflate(inflater, container, false);
         pizzaGrid = binding.getRoot().findViewById(R.id.pizza_grid);
+        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 1);
+        pizzaGrid.setLayoutManager(layoutManager);
         return binding.getRoot();
     }
 
@@ -49,13 +51,11 @@ public class FirstFragment extends Fragment {
         toppings.add("Peperoni");
         toppings.add("Onion");
         toppings.add("Cheese");
-
-        String pizzaName = getResources().getString(R.string.pizza_pepperoni);
-
-        Pizza pizza = new Pizza(pizzaName, R.mipmap.ic_pizza, pizzaSize, toppings);
-        Pizza pizza1 = new Pizza("Pepperoni 2", R.mipmap.ic_pizza, pizzaSize, toppings);
-        Pizza pizza2 = new Pizza("Pepperoni 3", R.mipmap.ic_pizza, pizzaSize, toppings);
-        Pizza pizza3 = new Pizza("Pepperoni 4", R.mipmap.ic_pizza, pizzaSize, toppings);
+        
+        Pizza pizza = new Pizza(getString(R.string.pizza_pepperoni), R.drawable.pepperoni, pizzaSize, toppings);
+        Pizza pizza1 = new Pizza(getString(R.string.pizza_veggie), R.drawable.veggie, pizzaSize, toppings);
+        Pizza pizza2 = new Pizza(getString(R.string.pizza_margherita), R.drawable.margherita, pizzaSize, toppings);
+        Pizza pizza3 = new Pizza(getString(R.string.pizza_hawaiian), R.drawable.hawaiian, pizzaSize, toppings);
 
         List<Pizza> pizzaList = new ArrayList<>();
         pizzaList.add(pizza);
