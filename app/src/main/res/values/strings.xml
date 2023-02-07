@@ -20,4 +20,9 @@
     <string name="pizza_bbq" translatable="false">BBQ</string>
     <string name="pizza_hawaiian">Hawaiian</string>
     <string name="pizza_margherita">Margherita</string>
+    <string name="size">Size:</string>
+    <string name="size_big">Big</string>
+    <string name="size_medium">Medium</string>
+    <string name="size_small">Small</string>
+    <string name="order_now">Order Now</string>
 </resources>

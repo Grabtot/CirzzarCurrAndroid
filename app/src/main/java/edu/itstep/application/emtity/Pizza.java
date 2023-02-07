@@ -1,13 +1,14 @@
 package edu.itstep.application.emtity;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-public class Pizza {
-    private String name;
-    private int imageResource;
-    private Map<String, Integer> sizesPrices;
-    private List<String> toppings;
+public class Pizza implements Serializable {
+    private final String name;
+    private final int imageResource;
+    private final Map<String, Integer> sizesPrices;
+    private final List<String> toppings;
 
     public Pizza(String name, int imageResource, Map<String, Integer> sizesPrices, List<String> toppings) {
         this.name = name;
@@ -40,6 +41,23 @@ public class Pizza {
 
     public List<String> getToppings() {
         return toppings;
+    }
+
+    public String getToppingsString() {
+        StringBuilder res = new StringBuilder();
+        for (int i = 0; i < toppings.size(); i++) {
+            String topping = toppings.get(i);
+            if (i != toppings.size() - 1) {
+                res.append(topping).append(", ");
+            } else {
+                res.append(topping);
+            }
+        }
+        return res.toString();
+    }
+
+    public int getPrice(String pizzaSize) {
+        return sizesPrices.get(pizzaSize);
     }
 }
 

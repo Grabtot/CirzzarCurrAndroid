@@ -1,16 +1,14 @@
 package edu.itstep.application;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -45,7 +43,8 @@ public class PizzaAdapter extends RecyclerView.Adapter<PizzaViewHolder> implemen
         holder.image.setImageResource(pizza.getImageResource());
         holder.name.setText(pizza.getName());
         holder.price.setText("от " + pizza.getMinPrice() + " грн");
-        holder.toppings.setText(pizza.getToppings().toString());
+        holder.toppings.setText(pizza.getToppingsString());
+        holder.cartButton.setTag(position);
         holder.cartButton.setOnClickListener(this);
     }
 
@@ -59,35 +58,19 @@ public class PizzaAdapter extends RecyclerView.Adapter<PizzaViewHolder> implemen
         return mPizzaList.size();
     }
 
-//    @Override
-//    public View getView(int position, View convertView, ViewGroup parent) {
-//        View view = convertView;
-//        PizzaViewHolder holder;
-//
-//        if (view == null) {
-//            view = LayoutInflater.from(mContext).inflate(R.layout.pizza_item, parent, false);
-//            holder = new PizzaViewHolder(view);
-//            view.setTag(holder);
-//        } else {
-//            holder = (PizzaViewHolder) view.getTag();
-//        }
-//
-//        Pizza pizza = mPizzaList.get(position);
-//
-//        holder.image.setImageResource(pizza.getImageResource());
-//        holder.name.setText(pizza.getName());
-//        holder.price.setText("от " + pizza.getMinPrice() + " грн");
-//        holder.toppings.setText(pizza.getToppings().toString());
-//        view.findViewById(R.id.add_to_cart_button).setOnClickListener(this);
-//        return view;
-//    }
-
     @Override
     public void onClick(View view) {
-        FragmentManager fragmentManager = ((AppCompatActivity) mContext).getSupportFragmentManager();
-        NavHostFragment.findNavController(fragmentManager.findFragmentById(R.id.nav_host_fragment_content_main))
-                .navigate(R.id.action_FirstFragment_to_SecondFragment);
 
+        FragmentManager fragmentManager = ((AppCompatActivity) mContext).getSupportFragmentManager();
+
+        int position = (int) view.getTag();
+        Pizza selectedPizza = mPizzaList.get(position);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("selected_pizza", selectedPizza);
+
+        DetailsFragment detailsFragment = new DetailsFragment();
+        detailsFragment.setArguments(bundle);
+        detailsFragment.show(fragmentManager, "second_fragment");
     }
 }
 

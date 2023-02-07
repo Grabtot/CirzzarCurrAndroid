@@ -7,4 +7,9 @@
     <string name="pizza_veggie">Вегетарианскиая</string>
     <string name="pizza_hawaiian">Гавайская</string>
     <string name="pizza_margherita">Маргарита</string>
+    <string name="size">Размер:</string>
+    <string name="size_big">Большая</string>
+    <string name="size_medium">Средняя</string>
+    <string name="size_small">Мазенькая</string>
+    <string name="order_now">Заказать</string>
 </resources>
