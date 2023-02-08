@@ -5,39 +5,45 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioButton;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
-import edu.itstep.application.databinding.FragmentSecondBinding;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import edu.itstep.application.databinding.FragmentDetailsBinding;
 import edu.itstep.application.emtity.Pizza;
 
 public class DetailsFragment extends BottomSheetDialogFragment {
 
-    private FragmentSecondBinding binding;
-    private Pizza selectedPizza;
+    private FragmentDetailsBinding binding;
+    private List<Pizza> selectedPizzas;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState
     ) {
 
-        binding = FragmentSecondBinding.inflate(inflater, container, false);
+        binding = FragmentDetailsBinding.inflate(inflater, container, false);
 
-
+        selectedPizzas = new ArrayList<>();
         assert getArguments() != null;
-        selectedPizza = (Pizza) getArguments().getSerializable("selected_pizza");
+        Pizza selectedPizza = (Pizza) getArguments().getSerializable("selected_pizza");
+        selectedPizzas.add(selectedPizza);
+
         binding.detailsName.setText(selectedPizza.getName());
         binding.detailsToppings.setText(selectedPizza.getToppingsString());
         binding.detailsPrice.setText(selectedPizza.getMinPrice() + "грн");
 
-
+        selectedPizza.setSelectedSize("Small");
         binding.detailsSize.setOnCheckedChangeListener((radioGroup, i) -> {
             RadioButton button = binding.getRoot().findViewById(i);
             String pizzaSize = button.getText().toString();
-
+            selectedPizza.setSelectedSize(pizzaSize);
             binding.detailsPrice.setText(String.valueOf(selectedPizza.getPrice(pizzaSize)));
         });
 
@@ -47,9 +53,15 @@ public class DetailsFragment extends BottomSheetDialogFragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         binding.detailsOrderButton.setOnClickListener(view1 ->
-                Toast.makeText(getContext(), "You order pizza", Toast.LENGTH_SHORT).show());
+        {
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("cart", (Serializable) selectedPizzas);
+
+            NavHostFragment.findNavController(DetailsFragment.this)
+                    .navigate(R.id.action_FirstFragment_to_orderFragment, bundle);
+            dismiss();
+        });
     }
 
     public void onChecked(View view) {

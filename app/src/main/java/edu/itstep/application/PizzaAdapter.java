@@ -31,7 +31,6 @@ public class PizzaAdapter extends RecyclerView.Adapter<PizzaViewHolder> implemen
     public PizzaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(
                 R.layout.pizza_item, parent, false);
-
         return new PizzaViewHolder(view);
 
     }

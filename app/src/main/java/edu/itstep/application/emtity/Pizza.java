@@ -1,14 +1,20 @@
 package edu.itstep.application.emtity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-public class Pizza implements Serializable {
+public class Pizza implements Serializable, Parcelable {
     private final String name;
     private final int imageResource;
     private final Map<String, Integer> sizesPrices;
     private final List<String> toppings;
+    private String selectedSize;
 
     public Pizza(String name, int imageResource, Map<String, Integer> sizesPrices, List<String> toppings) {
         this.name = name;
@@ -16,6 +22,26 @@ public class Pizza implements Serializable {
         this.sizesPrices = sizesPrices;
         this.toppings = toppings;
     }
+
+    protected Pizza(Parcel in) {
+        name = in.readString();
+        imageResource = in.readInt();
+        sizesPrices = in.readHashMap(null);
+        toppings = in.createStringArrayList();
+        selectedSize = in.readString();
+    }
+
+    public static final Creator<Pizza> CREATOR = new Creator<Pizza>() {
+        @Override
+        public Pizza createFromParcel(Parcel in) {
+            return new Pizza(in);
+        }
+
+        @Override
+        public Pizza[] newArray(int size) {
+            return new Pizza[size];
+        }
+    };
 
     public String getName() {
         return name;
@@ -58,6 +84,32 @@ public class Pizza implements Serializable {
 
     public int getPrice(String pizzaSize) {
         return sizesPrices.get(pizzaSize);
+    }
+
+    public String getSelectedSize() {
+        return selectedSize;
+    }
+
+    public void setSelectedSize(String selectedSize) {
+        this.selectedSize = selectedSize;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeInt(imageResource);
+        dest.writeMap(sizesPrices);
+        dest.writeStringList(toppings);
+        dest.writeString(selectedSize);
+    }
+
+    public int getPrice() {
+        return sizesPrices.get(selectedSize);
     }
 }
 
